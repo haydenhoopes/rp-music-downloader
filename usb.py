@@ -25,7 +25,7 @@ class USB:
                 columns = line.split()
                 
                 # Only consider devices with TRAN type 'usb'
-                if len(columns) >= 3 and columns[2].lower() == 'usb':
+                if 'usb' in columns:
                     device_name = columns[0]
                     mount_point = columns[1] if len(columns) > 1 else None
                     devices.append((f"/dev/{device_name}", mount_point))

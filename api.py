@@ -5,7 +5,7 @@ class API:
     def __init__(self):
         self.token = "AIzaSyCfYXmCeqDdhVLwkL3oPu0flFPpb9415vI"
         self.base_url = "https://www.googleapis.com/youtube/v3/playlistItems"
-        self.playlist_id = "PLU0hyGoSZN9DRmK8AnZ6amj_NNwYUpWyx"
+        self.playlist_id = "PLU0hyGoSZN9AzLZqZ7jaKxJxSWZjnmmhe"
         self.videos = []
 
     def get_items(self):

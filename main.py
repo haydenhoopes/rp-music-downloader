@@ -13,9 +13,6 @@ def main(api, db, usb):
     try:
         downloader = Downloader()
 
-        db.create_table()
-        msg.info('connected to db')
-
         api_items = api.get_items()
         msg.info('connected to api')
 
@@ -45,6 +42,8 @@ if __name__ == "__main__":
     api = API()
 
     if usb.exists():
+        db.create_table()
+        msg.info('connected to db')
         if api.get_item_count() != db.get_item_count():
             main(api, db, usb)
         else:
