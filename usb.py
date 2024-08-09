@@ -8,17 +8,13 @@ class USB:
     def exists(self):
         return len(self.get_devices()) > 0
 
-    def get_devices(self):
+    def get_usb(self):
         try:
             # Run the 'lsblk' command and get its output
             output = subprocess.check_output(["lsblk", "-o", "NAME,MOUNTPOINT,TRAN"]).decode()
             
             # Split the output into lines
             lines = output.strip().splitlines()
-            
-            # The first line is the header, skip it
-            headers = lines[0].split()
-            devices = []
             
             for line in lines[1:]:
                 # Split each line into its columns
@@ -28,29 +24,29 @@ class USB:
                 if 'usb' in columns:
                     device_name = columns[0]
                     mount_point = columns[1] if len(columns) > 1 else None
-                    devices.append((f"/dev/{device_name}", mount_point))
-            
-            return devices
+                    return (f"/dev/{device_name}", mount_point)
 
         except Exception as e:
             print(f"Error listing USB drives: {e}")
             return []
 
-    def get_usb(self):
-        return self.get_devices()[0]
-
     def mount(self):
+        try:
+            subprocess.run(['sudo', 'mkdir' '/mnt/usb'])
+        except:
+            pass
+
         usb = self.get_usb()
+        if usb[1]:
+            self.eject()
+
         device = usb[0]
-        mount_point = usb[1]
+        mount_point = '/mnt/usb'
         
-        self.eject()
         subprocess.run(["sudo", "mount", device, mount_point], check=True)
 
     def eject(self):
-        usb = self.get_usb()
-        device = usb[0]
-        subprocess.run(["sudo", "umount", device], check=False)
+        subprocess.run(["sudo", "umount", '/mnt/usb'], check=False)
 
     def validate_usb_items(self):
         pass

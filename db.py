@@ -17,7 +17,7 @@ class Database:
 
     def commit(self, sql):
         self.execute(sql)
-        self.cursor.commit()
+        self.connection.commit()
 
     def create_table(self):
         sql = """
