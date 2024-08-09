@@ -6,7 +6,7 @@ class USB:
         pass
 
     def exists(self):
-        return len(self.get_devices()) > 0
+        return self.get_usb() == True
 
     def get_usb(self):
         try:
@@ -25,6 +25,7 @@ class USB:
                     device_name = columns[0]
                     mount_point = columns[1] if len(columns) > 1 else None
                     return (f"/dev/{device_name}", mount_point)
+            return []
 
         except Exception as e:
             print(f"Error listing USB drives: {e}")
