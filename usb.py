@@ -6,7 +6,7 @@ class USB:
         pass
 
     def exists(self):
-        return len(self.get_devices) > 0
+        return len(self.get_devices()) > 0
 
     def get_devices(self):
         try:
