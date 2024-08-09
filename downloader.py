@@ -1,5 +1,6 @@
 from pytube import YouTube
 import subprocess, os
+from wasabi import msg
 
 
 class Downloader:
@@ -17,6 +18,7 @@ class Downloader:
         subprocess.run(['ffmpeg', '-i', audio_file_path, new_file])
 
         os.remove(audio_file_path)
+        msg.info(f'item {item['name']} downloaded')
 
     def download_items(self, items):
         for item in items:
