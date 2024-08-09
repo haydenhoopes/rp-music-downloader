@@ -39,7 +39,7 @@ def main(api, db, usb):
         msg.fail(e)
 
 if __name__ == "__main__":
-    msg.info(f'starting downloader: {datetime.now.strftime("%Y-%m-%d %H:%M:%S")}')
+    msg.info(f'starting downloader: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
     usb = USB()
     db = Database()
     api = API()
