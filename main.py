@@ -20,7 +20,7 @@ def main(api, db, usb):
         msg.info('connected to api')
 
         items_to_download = db.get_items_that_havent_been_downloaded_yet(api_items)
-        msg.info(f'{items_to_download} items to download')
+        msg.info(f'{len(items_to_download)} items to download')
 
         # Download stuff
         usb.mount()
