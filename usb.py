@@ -19,7 +19,7 @@ class USB:
         if not os.path.ismount(self.mount_point):
             if self.device_path:
                 os.makedirs(self.mount_point, exist_ok=True)
-                subprocess.run(["sudo", "mount", self.device_path, self.mount_point])
+                subprocess.run(["sudo", "mount", '-t', 'vfat', self.device_path, self.mount_point])
                 print(f"Mounted {self.device_path} to {self.mount_point}")
             else:
                 msg.fail("No USB device found.")

@@ -22,7 +22,7 @@ def main(api, db, usb):
         # Download stuff
         usb.mount()
 
-        downloader.download_items(items_to_download)
+        downloader.download_items(items_to_download, usb.get_path())
         msg.good('items downloaded successfully')
 
         db.add_downloaded_items(items_to_download)
@@ -44,6 +44,6 @@ if __name__ == "__main__":
         if api.get_item_count() != db.get_item_count(usb_serial_number):
             main(api, db, usb)
         else:
-            msg.info('no new items to download')
+            print('no new items to download')
     else:
-        msg.info('no usb inserted')
+        print('no usb inserted')
