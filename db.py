@@ -57,8 +57,8 @@ class Database:
                     self.items_to_download.append(item)
         return self.items_to_download
 
-    def get_item_count(self):
-        return len(self.get_items())
+    def get_item_count(self, usb_serial_number):
+        return len(self.get_items(usb_serial_number))
         
     def add_downloaded_item(self, video_id, name, url, usb_serial_number):
         sql = f"""

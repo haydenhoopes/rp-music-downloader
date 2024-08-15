@@ -40,7 +40,8 @@ if __name__ == "__main__":
     if usb.exists():
         db.create_table()
         print('connected to db')
-        if api.get_item_count() != db.get_item_count():
+        usb_serial_number = usb.get_serial_number()
+        if api.get_item_count() != db.get_item_count(usb_serial_number):
             main(api, db, usb)
         else:
             msg.info('no new items to download')
