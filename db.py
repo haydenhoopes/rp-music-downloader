@@ -24,16 +24,19 @@ class Database:
             CREATE TABLE IF NOT EXISTS items (
                 video_id VARCHAR(100) PRIMARY KEY,
                 name VARCHAR(150) NOT NULL,
-                url VARCHAR(150) NOT NULL
+                url VARCHAR(150) NOT NULL,
+                usb_serial_number VARCHAR(150) NOT NULL
             );
         """
         self.commit(sql)
 
-    def get_items(self):
+    def get_items(self, usb_serial_number):
         if not self.results:
-            sql = """
-                SELECT video_id, name, url
+            sql = f"""
+                SELECT video_id, name, url, usb_serial_number
                 FROM items
+                WHERE
+                    usb_serial_number = '{usb_serial_number}'
                 ;
             """
             self.execute(sql)
@@ -57,18 +60,19 @@ class Database:
     def get_item_count(self):
         return len(self.get_items())
         
-    def add_downloaded_item(self, video_id, name, url):
+    def add_downloaded_item(self, video_id, name, url, usb_serial_number):
         sql = f"""
             INSERT INTO items (
-                video_id, name, url
+                video_id, name, url, usb_serial_number
             ) VALUES (
                 '{video_id}',
                 '{name}',
-                '{url}'
+                '{url}',
+                '{usb_serial_number}'
             );
         """
         self.commit(sql)
 
     def add_downloaded_items(self, items):
         for item in items:
-            self.add_downloaded_item(item['id'], item['name'], item['url'])
+            self.add_downloaded_item(item['id'], item['name'], item['url'], item['usb_serial_number'])
