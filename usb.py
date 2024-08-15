@@ -1,53 +1,43 @@
-import subprocess
+import subprocess, os
 
 
 class USB:
-    def __init__(self):
-        pass
+    def __init__(self, mount_point="/mnt/usb"):
+        self.mount_point = mount_point
+        self.device_path = None
 
     def exists(self):
-        return len(self.get_usb()) > 0
-
-    def get_usb(self):
-        try:
-            # Run the 'lsblk' command and get its output
-            output = subprocess.check_output(["lsblk", "-o", "NAME,MOUNTPOINT,TRAN"]).decode()
-            
-            # Split the output into lines
-            lines = output.strip().splitlines()
-            
-            for line in lines[1:]:
-                # Split each line into its columns
-                columns = line.split()
-                
-                # Only consider devices with TRAN type 'usb'
-                if 'usb' in columns:
-                    device_name = columns[0]
-                    mount_point = columns[1] if len(columns) > 1 else None
-                    return (f"/dev/{device_name}", mount_point)
-            return []
-
-        except Exception as e:
-            print(f"Error listing USB drives: {e}")
-            return []
+        """Check if a USB device is plugged in."""
+        result = subprocess.run(["lsblk", "-o", "NAME,MOUNTPOINT"], capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            if "sd" in line and not "/boot" in line and not "/" in line:
+                self.device_path = "/dev/" + line.split()[0]
+                return True
+        return False
 
     def mount(self):
-        try:
-            subprocess.run(['sudo', 'mkdir' '/mnt/usb'])
-        except:
-            pass
-
-        usb = self.get_usb()
-        if usb[1]:
-            self.eject()
-
-        device = usb[0]
-        mount_point = '/mnt/usb'
-        
-        subprocess.run(["sudo", "mount", device, mount_point], check=True)
+        """Mount the USB device."""
+        if not os.path.ismount(self.mount_point):
+            if self.device_path:
+                os.makedirs(self.mount_point, exist_ok=True)
+                subprocess.run(["sudo", "mount", self.device_path, self.mount_point])
+                return f"Mounted {self.device_path} to {self.mount_point}"
+            else:
+                return "No USB device found."
+        else:
+            return "USB is already mounted."
 
     def eject(self):
-        subprocess.run(["sudo", "umount", '/mnt/usb'], check=False)
+        """Unmount the USB device."""
+        if os.path.ismount(self.mount_point):
+            subprocess.run(["sudo", "umount", self.mount_point])
+            return f"Unmounted {self.device_path} from {self.mount_point}"
+        else:
+            return "USB is not mounted."
 
-    def validate_usb_items(self):
-        pass
+    def get_path(self):
+        """Get the path where the USB is mounted."""
+        if os.path.ismount(self.mount_point):
+            return self.mount_point
+        else:
+            return "USB is not mounted."
