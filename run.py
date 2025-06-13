@@ -9,7 +9,7 @@ from modules.logger import Logger
 
 
 def main():
-    logger = Logger()
+    logger = Logger('rp-music-download')
     usb = USB(logger)
 
     usb.mount_all()
