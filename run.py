@@ -1,22 +1,14 @@
 #!/usr/local/bin/python
 
 
-from modules.usb import USB
-from modules.db import Database
-from modules.api import API
-from modules.downloader import Downloader
-from modules.logger import Logger
+from usb import USB
+from db import Database
+from api import API
+from downloader import Downloader
+from wasabi import Printer
 
 
 def main():
-    logger = Logger()
-    usb = USB(logger)
-
-    usb.mount_all()
-
-    return
-
-
     try:
         msg = Printer(timestamp=True)
 

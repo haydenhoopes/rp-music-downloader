@@ -42,5 +42,7 @@ class API:
         return self.videos
 
     def get_item_count(self):
-        return len(self.get_items())
+        count = len(self.get_items())
+        print('connected to api')
+        return count
     

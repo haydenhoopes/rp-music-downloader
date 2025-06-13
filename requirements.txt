@@ -1,1 +1,4 @@
-pytube=15.0.0
+colorama==0.4.6
+pytube==15.0.0
+wasabi==1.1.3
+
