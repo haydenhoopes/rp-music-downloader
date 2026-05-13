@@ -63,8 +63,8 @@ class MusicDownloader:
             for item in playlist_items[playlist_id]:
                 sql = f"""
                     INSERT OR IGNORE INTO Songs (
-                        video_id, video_name, playlist_id, unable_to_download
-                    ) VALUES (?, ?, ?, 0);
+                        video_id, video_name, playlist_id, able_to_download
+                    ) VALUES (?, ?, ?, 1);
                 """
                 self.db.execute(sql, [item['contentDetails']['videoId'], item['snippet']['title'], playlist_id])
 
